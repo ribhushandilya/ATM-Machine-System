@@ -1,0 +1,70 @@
+import time
+
+# Define account information dictionaries
+account_names = {123456789: 'XYZ',
+                 987654321: 'ABC', 123459876: 'PQR'}
+account_balances = {123456789: 30000, 987654321: 20000, 123459876: 10000}
+
+# Function to display the menu and handle user choices
+
+
+def choice(account_number, attempts):
+    print("1. Check Balance")
+    print("2. Deposit")
+    print("3. Withdrawal")
+    print("4. Exit")
+
+    option = int(input("Please select an option: "))
+
+    if option == 1:
+        print("Your Account Balance is: INR", account_balances[account_number])
+    elif option == 2:
+        amount = int(input("Please Enter the Deposit Amount: INR "))
+        account_balances[account_number] += amount
+        print("Deposit Successful. Your Account Balance is now: INR",
+              account_balances[account_number])
+    elif option == 3:
+        amount = int(input("Enter the Withdrawal Amount: INR "))
+        if amount <= account_balances[account_number]:
+            account_balances[account_number] -= amount
+            print("Withdrawal Successful. Your Account Balance is now: INR",
+                  account_balances[account_number])
+        else:
+            print("Insufficient funds. You have only INR",
+                  account_balances[account_number], " in your account.")
+    elif option == 4:
+        print("Exiting the ATM.")
+        return
+    else:
+        print("Invalid option. Please choose a valid option.")
+
+    # Recursively call the choice function
+    choice(account_number, attempts)
+
+# Main function to start the ATM program
+
+
+def main():
+    attempts = 0  # Initialize the incorrect attempts counter
+
+    while attempts < 3:
+        account_number = int(input("Enter Your Bank Account Number: "))
+
+        if account_number in account_names:
+            print("Welcome to our ATM services, Mr.",
+                  account_names[account_number])
+            print("Please choose your preference.")
+            choice(account_number, attempts)
+            return  # Exit the loop if the user successfully accesses the account
+        else:
+            attempts += 1
+            print("Incorrect account number. Please try again.")
+
+    # If the user has made 3 incorrect attempts, inform them and wait for 24 hours
+    print("You have entered the wrong account number three times.")
+    print("Please try again after 30 Seconds.")
+    time.sleep(30)  # Wait for 24 hours (in seconds)
+
+
+# Call the main function to start the ATM program
+main()
